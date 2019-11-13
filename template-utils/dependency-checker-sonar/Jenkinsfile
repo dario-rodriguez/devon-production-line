@@ -1,0 +1,24 @@
+@Library('ProductionLineTemplateLib')
+
+import com.capgemini.productionline.configuration.JenkinsConfiguration;
+
+JenkinsConfiguration jenkinsConfiguration = new JenkinsConfiguration(this);
+
+pipeline {
+    agent any
+
+    parameters {
+        string defaultValue: 'tcp://127.0.0.1:2375', description: 'Remote docker url', name: 'NEW_DOCKER_HOST', trim: true
+    }
+
+    stages {
+        stage('Download & install the plugin') {
+            steps {
+                script {
+                    sh "wget https://github.com/dependency-check/dependency-check-sonar-plugin/releases/download/1.1.6/sonar-dependency-check-plugin-1.1.6.jar"
+                    sh "mv sonar-dependency-check-plugin-1.1.6.jar /pl_component_mounts/sonarqube/sonarqube_ext/plugins/"
+                }
+            }
+        }
+    }
+}
