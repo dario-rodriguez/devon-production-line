@@ -24,18 +24,14 @@ function delay(timeout: number) {
 
   console.log(await page.content());
 
-  await page.waitForSelector('#ldapmain #username');
-  await page.type('#ldapmain #username', user);
+  await page.waitForSelector('#username');
+  await page.type('#username', user);
 
-  await page.waitForSelector('#ldapmain #password');
-  await page.type('#ldapmain #password', pass);
+  await page.waitForSelector('#password');
+  await page.type('#password', pass);
 
-  await page.waitForSelector(
-    '.tab-content > #ldapmain > .login-body > #new_ldap_user > .btn-save',
-  );
-  await page.click(
-    '.tab-content > #ldapmain > .login-body > #new_ldap_user > .btn-save',
-  );
+  await page.waitForSelector('#new_ldap_user > input.btn-save.btn');
+  await page.click('#new_ldap_user > input.btn-save.btn');
 
   await navigationPromise;
 

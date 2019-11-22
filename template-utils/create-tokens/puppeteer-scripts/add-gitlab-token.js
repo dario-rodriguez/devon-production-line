@@ -30,12 +30,12 @@ function delay(timeout) {
     yield page.goto(url + '/users/sign_in');
     yield page.setViewport({ width: 1920, height: 969 });
     console.log(yield page.content());
-    yield page.waitForSelector('#ldapmain #username');
-    yield page.type('#ldapmain #username', user);
-    yield page.waitForSelector('#ldapmain #password');
-    yield page.type('#ldapmain #password', pass);
-    yield page.waitForSelector('.tab-content > #ldapmain > .login-body > #new_ldap_user > .btn-save');
-    yield page.click('.tab-content > #ldapmain > .login-body > #new_ldap_user > .btn-save');
+    yield page.waitForSelector('#username');
+    yield page.type('#username', user);
+    yield page.waitForSelector('#password');
+    yield page.type('#password', pass);
+    yield page.waitForSelector('#new_ldap_user > input.btn-save.btn');
+    yield page.click('#new_ldap_user > input.btn-save.btn');
     yield navigationPromise;
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     yield delay(10000);
