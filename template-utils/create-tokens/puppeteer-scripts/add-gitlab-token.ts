@@ -10,18 +10,24 @@ function delay(timeout: number) {
 }
 
 (async () => {
+  console.log('chiclis');
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
   page.authenticate({ username: user, password: pass });
 
+  console.log('chiclis');
+
   const navigationPromise = page.waitForNavigation();
 
   await page.goto(url + '/users/sign_in');
 
+  console.log('chiclis');
+
   await page.setViewport({ width: 1920, height: 969 });
 
+  console.log(await page.content());
   await page.waitForSelector('#username');
   await page.focus('#username');
   await page.keyboard.type(user);

@@ -21,14 +21,18 @@ function delay(timeout) {
     });
 }
 (() => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('chiclis');
     const browser = yield puppeteer_1.default.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = yield browser.newPage();
     page.authenticate({ username: user, password: pass });
+    console.log('chiclis');
     const navigationPromise = page.waitForNavigation();
     yield page.goto(url + '/users/sign_in');
+    console.log('chiclis');
     yield page.setViewport({ width: 1920, height: 969 });
+    console.log(yield page.content());
     yield page.waitForSelector('#username');
     yield page.focus('#username');
     yield page.keyboard.type(user);
