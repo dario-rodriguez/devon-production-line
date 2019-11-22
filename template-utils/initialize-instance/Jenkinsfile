@@ -136,7 +136,7 @@ pipeline {
             steps {
                 script {
                     build job: "UTILS/Create_Tokens", wait: false, parameters: [
-                        credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', value: params.svcaccount, name: 'svcaccount'
+                        credentials value: params.svcaccount, name: 'svcaccount'
                     ]
                 }
             }
