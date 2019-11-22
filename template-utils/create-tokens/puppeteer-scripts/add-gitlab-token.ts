@@ -18,9 +18,24 @@ function delay(timeout: number) {
 
   const navigationPromise = page.waitForNavigation();
 
-  await page.goto(url);
+  await page.goto(url + '/users/sign_in');
 
   await page.setViewport({ width: 1920, height: 969 });
+
+  await page.waitForSelector('#ldapmain #username');
+  await page.type('#ldapmain #username', user);
+
+  await page.waitForSelector('#ldapmain #password');
+  await page.type('#ldapmain #password', pass);
+
+  await page.waitForSelector(
+    '.tab-content > #ldapmain > .login-body > #new_ldap_user > .btn-save',
+  );
+  await page.click(
+    '.tab-content > #ldapmain > .login-body > #new_ldap_user > .btn-save',
+  );
+
+  await navigationPromise;
 
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
