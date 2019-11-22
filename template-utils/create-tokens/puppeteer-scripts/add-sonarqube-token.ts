@@ -14,7 +14,12 @@ const { url, user, pass } = parseArgs(process.argv);
 
   await page.setViewport({ width: 1920, height: 969 });
 
+  console.log('chiclis');
+  console.log(await page.content());
+
   const navigationPromise = page.waitForNavigation();
+
+  console.log(await page.content());
 
   await page.waitForSelector('#login');
   await page.focus('#login');
