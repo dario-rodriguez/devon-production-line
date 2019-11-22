@@ -41,6 +41,7 @@ console.log(`${url} ${user} ${pass}`);
     yield page.focus('#password');
     yield page.keyboard.type(pass);
     yield page.keyboard.press('Enter');
+    console.log(yield page.content());
     yield page.goto(url);
     console.log(yield page.content());
     yield page.waitForNavigation();

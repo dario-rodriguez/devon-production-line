@@ -40,6 +40,7 @@ console.log(`${url} ${user} ${pass}`);
 
   await page.keyboard.press('Enter');
 
+  console.log(await page.content());
   await page.goto(url);
   console.log(await page.content());
 
