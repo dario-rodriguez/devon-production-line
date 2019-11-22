@@ -29,13 +29,13 @@ function delay(timeout) {
     const navigationPromise = page.waitForNavigation();
     yield page.goto(url + '/users/sign_in');
     yield page.setViewport({ width: 1920, height: 969 });
-    console.log(yield page.content());
     yield page.waitForSelector('#username');
     yield page.type('#username', user);
     yield page.waitForSelector('#password');
     yield page.type('#password', pass);
     yield page.keyboard.press('Enter');
     yield navigationPromise;
+    console.log(yield page.content());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     yield delay(10000);
     yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');

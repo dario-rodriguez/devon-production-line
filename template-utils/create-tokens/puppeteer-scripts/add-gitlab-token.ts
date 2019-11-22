@@ -22,8 +22,6 @@ function delay(timeout: number) {
 
   await page.setViewport({ width: 1920, height: 969 });
 
-  console.log(await page.content());
-
   await page.waitForSelector('#username');
   await page.type('#username', user);
 
@@ -33,6 +31,8 @@ function delay(timeout: number) {
   await page.keyboard.press('Enter');
 
   await navigationPromise;
+
+  console.log(await page.content());
 
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
