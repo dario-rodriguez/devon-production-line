@@ -6,6 +6,7 @@ export function parseArgs(
     console.log(
       `Invalid arguments. Usage: ${args[0]} ${args[1]} <url> <username> <password>`,
     );
+    process.exit();
   }
   return { url: newArgs[0], user: newArgs[1], pass: newArgs[2] };
 }
