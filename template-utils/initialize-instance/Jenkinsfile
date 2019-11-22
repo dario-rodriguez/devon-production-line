@@ -136,7 +136,7 @@ pipeline {
             steps {
                 script {
                     build job: "UTILS/Create_Tokens", wait: false, parameters: [
-                        credentials value: params.svcaccount, name: 'svcaccount'
+                        credentials(description: 'Credentials for Production Line service account', name: 'svcaccount', value: params.svcaccount),
                     ]
                 }
             }
