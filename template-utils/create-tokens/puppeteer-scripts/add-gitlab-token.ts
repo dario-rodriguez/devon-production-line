@@ -38,8 +38,6 @@ console.log(`${url} ${user} ${pass}`);
   await page.focus('#password');
   await page.keyboard.type(pass);
 
-  await page.keyboard.press('Enter');
-
   await page.waitForSelector('#ldapmain > input.qa-sign-in-button');
   await page.click('#ldapmain > input.qa-sign-in-button');
 

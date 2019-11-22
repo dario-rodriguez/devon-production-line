@@ -40,7 +40,6 @@ console.log(`${url} ${user} ${pass}`);
     yield page.waitForSelector('#password');
     yield page.focus('#password');
     yield page.keyboard.type(pass);
-    yield page.keyboard.press('Enter');
     yield page.waitForSelector('#ldapmain > input.qa-sign-in-button');
     yield page.click('#ldapmain > input.qa-sign-in-button');
     yield page.waitForNavigation();
