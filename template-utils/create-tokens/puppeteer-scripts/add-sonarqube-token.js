@@ -16,11 +16,13 @@ const puppeteer_1 = __importDefault(require("puppeteer"));
 const parse_args_1 = require("./utils/parse-args");
 const { url, user, pass } = parse_args_1.parseArgs(process.argv);
 (() => __awaiter(void 0, void 0, void 0, function* () {
+    console.log('chiclis');
     const browser = yield puppeteer_1.default.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = yield browser.newPage();
     page.authenticate({ username: user, password: pass });
+    console.log('chiclis');
     yield page.goto(url + '/sessions/new');
     yield page.setViewport({ width: 1920, height: 969 });
     console.log('chiclis');
