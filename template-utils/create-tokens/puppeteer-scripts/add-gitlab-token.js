@@ -34,8 +34,7 @@ function delay(timeout) {
     yield page.type('#username', user);
     yield page.waitForSelector('#password');
     yield page.type('#password', pass);
-    yield page.waitForSelector('#new_ldap_user > input.btn-save.btn');
-    yield page.click('#new_ldap_user > input.btn-save.btn');
+    yield page.keyboard.press('Enter');
     yield navigationPromise;
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     yield delay(10000);
