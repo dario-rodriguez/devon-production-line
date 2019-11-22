@@ -4,12 +4,14 @@ import { parseArgs } from './utils/parse-args';
 const { url, user, pass } = parseArgs(process.argv);
 
 (async () => {
+  console.log('chiclis');
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
   page.authenticate({ username: user, password: pass });
 
+  console.log('chiclis');
   await page.goto(url + '/sessions/new');
 
   await page.setViewport({ width: 1920, height: 969 });
