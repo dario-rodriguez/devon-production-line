@@ -35,7 +35,6 @@ function delay(timeout) {
     yield page.type('#password', pass);
     yield page.keyboard.press('Enter');
     yield navigationPromise;
-    console.log(yield page.content());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     yield delay(10000);
     yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');

@@ -32,8 +32,6 @@ function delay(timeout: number) {
 
   await navigationPromise;
 
-  console.log(await page.content());
-
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
   );
