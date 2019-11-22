@@ -40,8 +40,8 @@ console.log(`${url} ${user} ${pass}`);
 
   await page.keyboard.press('Enter');
 
-  await page.waitForSelector('#new_ldap_user > input.btn-save.btn');
-  await page.click('#new_ldap_user > input.btn-save.btn');
+  await page.waitForSelector('#ldapmain > input.qa-sign-in-button');
+  await page.click('#ldapmain > input.qa-sign-in-button');
 
   await page.waitForNavigation();
 
