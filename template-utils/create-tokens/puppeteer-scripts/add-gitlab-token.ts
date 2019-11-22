@@ -22,6 +22,8 @@ function delay(timeout: number) {
 
   await page.setViewport({ width: 1920, height: 969 });
 
+  console.log(await page.content());
+
   await page.waitForSelector('#ldapmain #username');
   await page.type('#ldapmain #username', user);
 

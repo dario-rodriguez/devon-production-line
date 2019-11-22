@@ -29,6 +29,7 @@ function delay(timeout) {
     const navigationPromise = page.waitForNavigation();
     yield page.goto(url + '/users/sign_in');
     yield page.setViewport({ width: 1920, height: 969 });
+    console.log(yield page.content());
     yield page.waitForSelector('#ldapmain #username');
     yield page.type('#ldapmain #username', user);
     yield page.waitForSelector('#ldapmain #password');
