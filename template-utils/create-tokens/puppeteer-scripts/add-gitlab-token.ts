@@ -9,6 +9,8 @@ function delay(timeout: number) {
   });
 }
 
+console.log(`${url} ${user} ${pass}`);
+
 (async () => {
   console.log('chiclis');
   const browser = await puppeteer.launch({

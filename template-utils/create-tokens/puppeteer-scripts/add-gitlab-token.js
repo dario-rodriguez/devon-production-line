@@ -20,6 +20,7 @@ function delay(timeout) {
         setTimeout(resolve, timeout);
     });
 }
+console.log(`${url} ${user} ${pass}`);
 (() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('chiclis');
     const browser = yield puppeteer_1.default.launch({
