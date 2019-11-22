@@ -42,6 +42,8 @@ console.log(`${url} ${user} ${pass}`);
 
   await page.goto(url);
 
+  await page.waitForNavigation();
+
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
   );

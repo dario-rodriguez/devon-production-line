@@ -42,6 +42,7 @@ console.log(`${url} ${user} ${pass}`);
     yield page.keyboard.type(pass);
     yield page.keyboard.press('Enter');
     yield page.goto(url);
+    yield page.waitForNavigation();
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     yield delay(10000);
     yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
