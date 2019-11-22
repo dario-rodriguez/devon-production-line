@@ -30,7 +30,6 @@ function delay(timeout: number) {
 
   await page.keyboard.press('Enter');
 
-  await navigationPromise;
   await page.goto(url);
 
   await page.waitForSelector(
