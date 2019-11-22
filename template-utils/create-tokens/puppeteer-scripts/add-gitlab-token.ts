@@ -40,11 +40,11 @@ console.log(`${url} ${user} ${pass}`);
 
   await page.keyboard.press('Enter');
 
-  console.log(await page.content());
-  await page.goto(url);
-  console.log(await page.content());
+  await page.waitForSelector('#new_ldap_user > input.btn-save.btn');
+  await page.click('#new_ldap_user > input.btn-save.btn');
 
   await page.waitForNavigation();
+
   console.log(await page.content());
 
   await page.waitForSelector(
