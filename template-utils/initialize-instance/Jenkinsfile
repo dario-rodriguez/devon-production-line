@@ -123,7 +123,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
                         def content = readFile file: './template-utils/initialize-instance/configure-nexus.json', encoding: 'utf8'
-                        httpRequest acceptType: 'APPLICATION_JSON', authentication: params.svcaccount, requestBody: content, contentType: 'APPLICATION_JSON', httpMode: 'POST', url: "${ProductionLineGlobals.NEXUS_BASR_URL}service/rest/v1/script/"
+                        httpRequest acceptType: 'APPLICATION_JSON', authentication: params.svcaccount, requestBody: content, contentType: 'APPLICATION_JSON', httpMode: 'POST', url: "${ProductionLineGlobals.NEXUS_BASR_URL}service/rest/v1/script"
                         httpRequest acceptType: 'APPLICATION_JSON', authentication: params.svcaccount, requestBody: """{"password": "${pass}"}""", contentType: 'APPLICATION_JSON', httpMode: 'POST', url: "${ProductionLineGlobals.NEXUS_BASR_URL}service/rest/v1/script/configure_pl_nexus/run"
 
                         jenkinsConfiguration.createCredatialObjectUsernamePassword('nexus-api', 'Nexus internal admin user', 'nexus-api', pass)
