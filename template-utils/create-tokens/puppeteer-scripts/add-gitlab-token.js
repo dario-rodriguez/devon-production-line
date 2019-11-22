@@ -30,9 +30,11 @@ function delay(timeout) {
     yield page.goto(url + '/users/sign_in');
     yield page.setViewport({ width: 1920, height: 969 });
     yield page.waitForSelector('#username');
-    yield page.type('#username', user);
+    yield page.focus('#username');
+    yield page.keyboard.type(user);
     yield page.waitForSelector('#password');
-    yield page.type('#password', pass);
+    yield page.focus('#password');
+    yield page.keyboard.type(pass);
     yield page.keyboard.press('Enter');
     yield page.goto(url);
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');

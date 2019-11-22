@@ -23,10 +23,12 @@ function delay(timeout: number) {
   await page.setViewport({ width: 1920, height: 969 });
 
   await page.waitForSelector('#username');
-  await page.type('#username', user);
+  await page.focus('#username');
+  await page.keyboard.type(user);
 
   await page.waitForSelector('#password');
-  await page.type('#password', pass);
+  await page.focus('#password');
+  await page.keyboard.type(pass);
 
   await page.keyboard.press('Enter');
 
