@@ -3,6 +3,12 @@ import { parseArgs } from './utils/parse-args';
 
 const { url, user, pass } = parseArgs(process.argv);
 
+function delay(timeout: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
+
 (async () => {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -17,16 +23,19 @@ const { url, user, pass } = parseArgs(process.argv);
   await page.setViewport({ width: 1920, height: 969 });
 
   await page.waitForSelector(
-    '.navbar-collapse > .nav > .nav-item > .header-user-dropdown-toggle > .header-user-avatar',
+    'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
   );
+  await delay(10000);
   await page.click(
-    '.navbar-collapse > .nav > .nav-item > .header-user-dropdown-toggle > .header-user-avatar',
+    'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
   );
 
   await page.waitForSelector(
-    '.nav-item > .dropdown-menu > ul > li:nth-child(5) > a',
+    'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a',
   );
-  await page.click('.nav-item > .dropdown-menu > ul > li:nth-child(5) > a');
+  await page.click(
+    'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a',
+  );
 
   await navigationPromise;
 

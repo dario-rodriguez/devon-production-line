@@ -15,6 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const parse_args_1 = require("./utils/parse-args");
 const { url, user, pass } = parse_args_1.parseArgs(process.argv);
+function delay(timeout) {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const browser = yield puppeteer_1.default.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -24,10 +29,11 @@ const { url, user, pass } = parse_args_1.parseArgs(process.argv);
     const navigationPromise = page.waitForNavigation();
     yield page.goto(url);
     yield page.setViewport({ width: 1920, height: 969 });
-    yield page.waitForSelector('.navbar-collapse > .nav > .nav-item > .header-user-dropdown-toggle > .header-user-avatar');
-    yield page.click('.navbar-collapse > .nav > .nav-item > .header-user-dropdown-toggle > .header-user-avatar');
-    yield page.waitForSelector('.nav-item > .dropdown-menu > ul > li:nth-child(5) > a');
-    yield page.click('.nav-item > .dropdown-menu > ul > li:nth-child(5) > a');
+    yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
+    yield delay(10000);
+    yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
+    yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a');
+    yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a');
     yield navigationPromise;
     yield page.waitForSelector('.nav-sidebar-inner-scroll > .sidebar-top-level-items > li:nth-child(5) > a > .nav-item-name');
     yield page.click('.nav-sidebar-inner-scroll > .sidebar-top-level-items > li:nth-child(5) > a > .nav-item-name');
