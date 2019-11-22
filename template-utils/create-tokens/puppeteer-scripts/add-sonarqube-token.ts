@@ -10,9 +10,38 @@ const { url, user, pass } = parseArgs(process.argv);
   const page = await browser.newPage();
   page.authenticate({ username: user, password: pass });
 
-  await page.goto(url + '/projects');
+  await page.goto(url + '/sessions/new');
 
   await page.setViewport({ width: 1920, height: 969 });
+
+  const navigationPromise = page.waitForNavigation();
+
+  await page.waitForSelector('#login');
+  await page.focus('#login');
+  await page.keyboard.type(user);
+
+  await page.waitForSelector('#password');
+  await page.focus('#password');
+  await page.keyboard.type(pass);
+
+  await page.keyboard.press('Enter');
+
+  await navigationPromise;
+
+  await page.waitForSelector('#container > #login_form #login');
+  await page.click('#container > #login_form #login');
+
+  await page.waitForSelector('#container > #login_form #login');
+  await page.click('#container > #login_form #login');
+
+  await page.type('#container > #login_form #login', 'darrodri');
+
+  await page.waitForSelector(
+    '#login_form > .login-form > div > .text-right > .button',
+  );
+  await page.click('#login_form > .login-form > div > .text-right > .button');
+
+  await navigationPromise;
 
   await page.waitForSelector('.sidebar-page > #content #container');
   await page.click('.sidebar-page > #content #container');
