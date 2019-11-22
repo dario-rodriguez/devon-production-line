@@ -1,0 +1,122 @@
+@Library('ProductionLineTemplateLib')
+
+import com.capgemini.productionline.configuration.JenkinsConfiguration;
+import com.capgemini.productionline.configuration.GitLab;
+import com.capgemini.productionline.configuration.ProductionLineGlobals;
+import com.capgemini.productionline.configuration.SonarQube;
+
+JenkinsConfiguration jenkinsConfiguration = new JenkinsConfiguration(this);
+SonarQube sonarConfiguration = new SonarQube(this);
+
+pipeline {
+    agent any
+
+    parameters {
+        credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', defaultValue: 'svc-account-credentials', description: 'Credentials for Production Line service account', name: 'svcaccount', required: true
+    }
+
+
+    stages {
+        stage('Install NodeJS') {
+            steps {
+                script {
+                    println "Trying to install nodejs config"
+                    String installName = "NodeJS 10.17.0"
+                    String nodeJS_Version = "10.17.0"
+                    String npmPackages = "yarn"
+                    String home = ""
+                    long npmPackagesRefreshHours = 100
+
+                    nodeJSInstallSuccess = jenkinsConfiguration.addNodeJS_Version(installName, nodeJS_Version, npmPackages, home, npmPackagesRefreshHours)
+                }
+            }
+        }
+
+        stage('Create GitLab API token') {
+            steps {
+                script {
+                    def nodeJS = tool 'NodeJS 10.17.0'
+                    env.PATH = "${nodeJS}:${env.PATH}"
+                    def gitlabToken
+                    withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        gitlabToken = sh returnStdout: true, script: "node puppeteer-scripts/add-gitlab-token.js ${ProductionLineGlobals.GITLAB_BASE_URL} ${user} ${pass}"
+                    }
+
+                    GitLab.createGitlabTokenCredentials('gitlab-token', 'GitLab API token for PL service account', gitlabToken.trim())
+                }
+            }
+        }
+
+        stage('Create SonarQube API token') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        env.sonarToken = sh returnStdout: true, script: "node puppeteer-scripts/add-sonarqube-token.js ${ProductionLineGlobals.SONARQUBE_BASE_URL} ${user} ${pass}"
+                    }
+
+                    jenkinsConfiguration.createCredatialObjectSecretString('sonar-token', 'SonarQube API token for PL service account', env.sonarToken.trim())
+                }
+            }
+        }
+
+        stage('Add SonarQube installation') {
+            steps {
+                script {
+                    jenkinsConfiguration.addSonarqubeServer(
+                        'SonarQube',
+                        'http://sonarqube-core:9000/sonarqube',
+                        'sonar-token',
+                    )
+                }
+            }
+        }
+
+        stage('Add SonarQube webhook') {
+            steps {
+                script {
+                    def sonarVersion = sonarConfiguration.getSonarVersion(params.svcaccount)
+                    if (sonarVersion > '7.0') {
+                        sonarConfiguration.addWebhook(params.svcaccount, 'jenkins', 'http://jenkins-core:8080/jenkins/sonarqube-webhook/')
+                    } else {
+                        withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                            sh returnStdout: true, script: "node puppeteer-scripts/add-sonarqube-webhook.js ${ProductionLineGlobals.SONARQUBE_BASE_URL} ${user} ${pass}"
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Add SonarQube dependency check plugin') {
+            steps {
+                script {
+                    def sonarVersion = sonarConfiguration.getSonarVersion(params.svcaccount)
+                    if (sonarVersion > '7.0') {
+                        sh "https://github.com/dependency-check/dependency-check-sonar-plugin/releases/download/1.2.6/sonar-dependency-check-plugin-1.2.6.jar"
+                        sh "mv sonar-dependency-check-plugin-1.2.6.jar /pl_component_mounts/sonarqube/sonarqube_ext/plugins/"
+                    } else {
+                        sh "wget https://github.com/dependency-check/dependency-check-sonar-plugin/releases/download/1.1.6/sonar-dependency-check-plugin-1.1.6.jar"
+                        sh "mv sonar-dependency-check-plugin-1.1.6.jar /pl_component_mounts/sonarqube/sonarqube_ext/plugins/"
+                    }
+                }
+            }
+        }
+
+        stage('Restart SonarQube') {
+            steps {
+                script {
+                    sonarConfiguration.restartSonar(params.svcaccount)
+                }
+            }
+        }
+
+        stage('Update jenkins global maven settings'){
+            steps {
+                script {
+                     withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        sh returnStdout: true, script: "node puppeteer-scripts/configure-maven-settings.js ${ProductionLineGlobals.SONARQUBE_BASE_URL} ${user} ${pass}"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,145 @@
+@Library('ProductionLineTemplateLib')
+
+import com.capgemini.productionline.configuration.JenkinsConfiguration;
+import com.capgemini.productionline.configuration.Nexus;
+import com.capgemini.productionline.configuration.ProductionLineGlobals;
+
+JenkinsConfiguration jenkinsConfiguration = new JenkinsConfiguration(this);
+
+pipeline {
+    agent any
+
+    parameters {
+        credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', defaultValue: 'svc-account-credentials', description: 'Credentials for Production Line service account', name: 'svcaccount', required: true
+    }
+
+
+    stages {
+        stage('Install plugins') {
+            steps {
+                script {
+                    def pluginsHaveBeenInstalled = jenkinsConfiguration.installPlugin(["http_request", "job-dsl", "pipeline-maven", "nodejs", "gitlab-plugin"])
+                    
+                    if( pluginsHaveBeenInstalled ) {
+                        println "New plugins were installed - Restart"
+                        // We need to restart Jenkins in case new plugins have been installed.
+                        //if set to false, then do a force restart
+                        //still requires to manually start the job again afterwards
+                        jenkinsConfiguration.restartJenkins(false);
+                    } else {
+                        println "No plugins were installed"
+                    }
+                }
+            }
+        }
+
+        stage('Create UTIL pipelines') {
+            steps {
+                script {
+                    //Disable Job Security
+                    println "Disable job dsl security"
+                    jenkinsConfiguration.disableJobDSLScriptSecurity()
+
+                    //Prepare folders in Jenkins for the jobs
+                    println "Trying to create folder for jobs"
+                    jobDsl scriptText: """
+                        folder("UTILS"){
+                            description('UTILS jobs.')
+                        }
+                        """
+
+                    //Build job
+                    // TODO: Change remote url
+                    println "Trying to create Build job"
+                    jobDsl scriptText: """
+                        pipelineJob("UTILS/Create_Tokens") {
+                            description('Create GitLab & SonarQube tokens pipeline')
+                            definition {
+                                cpsScm {
+                                    scm {
+                                        git {
+                                            remote {
+                                                url('https://github.com/dario-rodriguez/devon-production-line.git')
+                                            }
+                                            branches('feature/refactor_mts')
+                                            scriptPath('template-utils/create-tokens/Jenkinsfile')
+                                            extensions { }  // required as otherwise it may try to tag the repo!
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        """
+                    println "Trying to create Build job"
+                    jobDsl scriptText: """
+                        pipelineJob("UTILS/Install_SonarQube_Plugin") {
+                            description('Create GitLab & SonarQube tokens pipeline')
+                            definition {
+                                cpsScm {
+                                    scm {
+                                        git {
+                                            remote {
+                                                url('https://github.com/dario-rodriguez/devon-production-line.git')
+                                            }
+                                            branches('feature/refactor_mts')
+                                            scriptPath('template-utils/install-sonar-plugin/Jenkinsfile')
+                                            extensions { }  // required as otherwise it may try to tag the repo!
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        """
+                    println "Trying to create Build job"
+                    jobDsl scriptText: """
+                        pipelineJob("UTILS/Docker_Configuration") {
+                            description('Create GitLab & SonarQube tokens pipeline')
+                            definition {
+                                cpsScm {
+                                    scm {
+                                        git {
+                                            remote {
+                                                url('https://github.com/dario-rodriguez/devon-production-line.git')
+                                            }
+                                            branches('feature/refactor_mts')
+                                            scriptPath('template-utils/docker-configuration/Jenkinsfile')
+                                            extensions { }  // required as otherwise it may try to tag the repo!
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        """
+                    
+                    //Enable Job Security again
+                    println "Enable job dsl security"
+                    jenkinsConfiguration.enableJobDSLScriptSecurity()
+                }
+            }
+        }
+
+        stage('Execute nexus3 script') {
+            steps {
+                script {
+                    withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        def content = readFile file: './template-utils/initialize-instance/configure-nexus.json', encoding: 'utf8'
+                        httpRequest acceptType: 'APPLICATION_JSON', authentication: params.svcaccount, requestBody: content, contentType: 'APPLICATION_JSON', httpMode: 'POST', url: "${nexusHostUrl}/service/rest/v1/script/"
+                        httpRequest acceptType: 'APPLICATION_JSON', authentication: params.svcaccount, requestBody: """{"password": "${pass}"}""", contentType: 'APPLICATION_JSON', httpMode: 'POST', url: "${nexusHostUrl}/service/rest/v1/script/configure_pl_nexus/run"
+
+                        jenkinsConfiguration.createCredatialObjectUsernamePassword('nexus-api', 'Nexus internal admin user', 'nexus-api', pass)
+                    }
+                }
+            }
+        }
+
+        stage('Create GitLab & SonarQube API Tokens') {
+            steps {
+                script {
+                    build job: "UTILS/Create_Tokens", wait: false, parameters: [
+                        credentials credentialType: 'com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl', value: params.svcaccount, name: 'svcaccount'
+                    ]
+                }
+            }
+        }
+    }
+}
