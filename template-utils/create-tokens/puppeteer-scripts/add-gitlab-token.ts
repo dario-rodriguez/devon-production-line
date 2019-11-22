@@ -30,8 +30,7 @@ function delay(timeout: number) {
   await page.waitForSelector('#password');
   await page.type('#password', pass);
 
-  await page.waitForSelector('#new_ldap_user > input.btn-save.btn');
-  await page.click('#new_ldap_user > input.btn-save.btn');
+  await page.keyboard.press('Enter');
 
   await navigationPromise;
 
