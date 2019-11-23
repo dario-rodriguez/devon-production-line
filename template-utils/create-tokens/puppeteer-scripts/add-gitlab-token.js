@@ -21,19 +21,23 @@ function delay(timeout) {
     });
 }
 console.log(`${url} ${user} ${pass}`);
+process.on('unhandledRejection', (reason, p) => {
+    console.error(reason, 'Unhandled Rejection at Promise', p);
+    process.exit(1);
+});
+process.on('uncaughtException', err => {
+    console.error(err, 'Uncaught Exception thrown');
+    process.exit(1);
+});
 (() => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('chiclis');
     const browser = yield puppeteer_1.default.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = yield browser.newPage();
     page.authenticate({ username: user, password: pass });
-    console.log('chiclis');
     const navigationPromise = page.waitForNavigation();
     yield page.goto(url + '/users/sign_in');
-    console.log('chiclis');
     yield page.setViewport({ width: 1920, height: 969 });
-    console.log(yield page.content());
     yield page.waitForSelector('#username');
     yield page.focus('#username');
     yield page.keyboard.type(user);
@@ -42,6 +46,7 @@ console.log(`${url} ${user} ${pass}`);
     yield page.keyboard.type(pass);
     yield page.waitForSelector('#ldapmain > input.qa-sign-in-button');
     yield page.click('#ldapmain > input.qa-sign-in-button');
+    console.log(yield page.content());
     yield page.waitForNavigation();
     console.log(yield page.content());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');

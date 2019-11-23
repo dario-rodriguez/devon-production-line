@@ -11,25 +11,28 @@ function delay(timeout: number) {
 
 console.log(`${url} ${user} ${pass}`);
 
+process.on('unhandledRejection', (reason, p) => {
+  console.error(reason, 'Unhandled Rejection at Promise', p);
+  process.exit(1);
+});
+process.on('uncaughtException', err => {
+  console.error(err, 'Uncaught Exception thrown');
+  process.exit(1);
+});
+
 (async () => {
-  console.log('chiclis');
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
   page.authenticate({ username: user, password: pass });
 
-  console.log('chiclis');
-
   const navigationPromise = page.waitForNavigation();
 
   await page.goto(url + '/users/sign_in');
 
-  console.log('chiclis');
-
   await page.setViewport({ width: 1920, height: 969 });
 
-  console.log(await page.content());
   await page.waitForSelector('#username');
   await page.focus('#username');
   await page.keyboard.type(user);
@@ -40,6 +43,8 @@ console.log(`${url} ${user} ${pass}`);
 
   await page.waitForSelector('#ldapmain > input.qa-sign-in-button');
   await page.click('#ldapmain > input.qa-sign-in-button');
+
+  console.log(await page.content());
 
   await page.waitForNavigation();
 
