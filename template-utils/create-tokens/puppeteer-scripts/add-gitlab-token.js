@@ -36,7 +36,7 @@ process.on('uncaughtException', err => {
     });
     const page = yield browser.newPage();
     page.authenticate({ username: user, password: pass });
-    const navigationPromise = page.waitForNavigation();
+    // const navigationPromise = page.waitForNavigation();
     yield page.goto(url + '/users/sign_out');
     yield page.setViewport({ width: 1920, height: 969 });
     yield page.waitForSelector('body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a');
@@ -61,10 +61,10 @@ process.on('uncaughtException', err => {
     yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a');
     yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a');
-    yield navigationPromise;
+    yield page.waitForNavigation();
     yield page.waitForSelector('.nav-sidebar-inner-scroll > .sidebar-top-level-items > li:nth-child(5) > a > .nav-item-name');
     yield page.click('.nav-sidebar-inner-scroll > .sidebar-top-level-items > li:nth-child(5) > a > .nav-item-name');
-    yield navigationPromise;
+    yield page.waitForNavigation();
     yield page.waitForSelector('#personal_access_token_name');
     yield page.$eval('#personal_access_token_name', (el) => (el.value = 'jenkins_new'));
     yield page.waitForSelector('#new_personal_access_token #personal_access_token_name');
@@ -81,7 +81,7 @@ process.on('uncaughtException', err => {
     yield page.click('#new_personal_access_token #personal_access_token_name');
     yield page.waitForSelector('#new_personal_access_token > .prepend-top-default > .btn');
     yield page.click('#new_personal_access_token > .prepend-top-default > .btn');
-    yield navigationPromise;
+    yield page.waitForNavigation();
     yield page.waitForSelector('#created-personal-access-token');
     console.log(yield page.$eval('#created-personal-access-token', (el) => el.value));
     yield browser.close();

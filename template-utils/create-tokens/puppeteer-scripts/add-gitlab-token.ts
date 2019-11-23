@@ -27,7 +27,7 @@ process.on('uncaughtException', err => {
   });
   const page = await browser.newPage();
   page.authenticate({ username: user, password: pass });
-  const navigationPromise = page.waitForNavigation();
+  // const navigationPromise = page.waitForNavigation();
 
   await page.goto(url + '/users/sign_out');
 
@@ -73,7 +73,7 @@ process.on('uncaughtException', err => {
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a',
   );
 
-  await navigationPromise;
+  await page.waitForNavigation();
 
   await page.waitForSelector(
     '.nav-sidebar-inner-scroll > .sidebar-top-level-items > li:nth-child(5) > a > .nav-item-name',
@@ -82,7 +82,7 @@ process.on('uncaughtException', err => {
     '.nav-sidebar-inner-scroll > .sidebar-top-level-items > li:nth-child(5) > a > .nav-item-name',
   );
 
-  await navigationPromise;
+  await page.waitForNavigation();
 
   await page.waitForSelector('#personal_access_token_name');
   await page.$eval(
@@ -132,7 +132,7 @@ process.on('uncaughtException', err => {
   );
   await page.click('#new_personal_access_token > .prepend-top-default > .btn');
 
-  await navigationPromise;
+  await page.waitForNavigation();
 
   await page.waitForSelector('#created-personal-access-token');
   console.log(
