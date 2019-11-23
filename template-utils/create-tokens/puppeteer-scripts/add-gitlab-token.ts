@@ -29,7 +29,7 @@ process.on('uncaughtException', err => {
   page.authenticate({ username: user, password: pass });
   // const navigationPromise = page.waitForNavigation();
 
-  await page.goto(url + '/users/sign_out');
+  await page.goto(url + '/users/sign_in');
 
   await page.setViewport({ width: 1920, height: 969 });
 

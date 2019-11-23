@@ -37,7 +37,7 @@ process.on('uncaughtException', err => {
     const page = yield browser.newPage();
     page.authenticate({ username: user, password: pass });
     // const navigationPromise = page.waitForNavigation();
-    yield page.goto(url + '/users/sign_out');
+    yield page.goto(url + '/users/sign_in');
     yield page.setViewport({ width: 1920, height: 969 });
     yield page.waitForSelector('body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a');
     yield page.click('body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a');
