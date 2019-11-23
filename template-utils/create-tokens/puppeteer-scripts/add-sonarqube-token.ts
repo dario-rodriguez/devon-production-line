@@ -3,13 +3,30 @@ import { parseArgs } from './utils/parse-args';
 
 const { url, user, pass } = parseArgs(process.argv);
 
+function delay(timeout: number) {
+  return new Promise(resolve => {
+    setTimeout(resolve, timeout);
+  });
+}
+
+console.log(`${url} ${user} ${pass}`);
+
+process.on('unhandledRejection', (reason, p) => {
+  console.error(reason, 'Unhandled Rejection at Promise', p);
+  process.exit(1);
+});
+process.on('uncaughtException', err => {
+  console.error(err, 'Uncaught Exception thrown');
+  process.exit(1);
+});
+
 (async () => {
   console.log('chiclis');
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
-  page.authenticate({ username: user, password: pass });
+  // page.authenticate({ username: user, password: pass });
 
   console.log('chiclis');
   await page.goto(url + '/sessions/new');
@@ -17,9 +34,8 @@ const { url, user, pass } = parseArgs(process.argv);
   await page.setViewport({ width: 1920, height: 969 });
 
   console.log('chiclis');
-  console.log(await page.content());
 
-  const navigationPromise = page.waitForNavigation();
+  // const navigationPromise = page.waitForNavigation();
 
   console.log(await page.content());
 
@@ -33,11 +49,9 @@ const { url, user, pass } = parseArgs(process.argv);
 
   await page.keyboard.press('Enter');
 
-  await navigationPromise;
+  await page.waitForNavigation();
 
   console.log(await page.content());
-
-  await navigationPromise;
 
   await page.waitForSelector('.sidebar-page > #content #container');
   await page.click('.sidebar-page > #content #container');

@@ -15,19 +15,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const puppeteer_1 = __importDefault(require("puppeteer"));
 const parse_args_1 = require("./utils/parse-args");
 const { url, user, pass } = parse_args_1.parseArgs(process.argv);
+function delay(timeout) {
+    return new Promise(resolve => {
+        setTimeout(resolve, timeout);
+    });
+}
+console.log(`${url} ${user} ${pass}`);
+process.on('unhandledRejection', (reason, p) => {
+    console.error(reason, 'Unhandled Rejection at Promise', p);
+    process.exit(1);
+});
+process.on('uncaughtException', err => {
+    console.error(err, 'Uncaught Exception thrown');
+    process.exit(1);
+});
 (() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('chiclis');
     const browser = yield puppeteer_1.default.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = yield browser.newPage();
-    page.authenticate({ username: user, password: pass });
+    // page.authenticate({ username: user, password: pass });
     console.log('chiclis');
     yield page.goto(url + '/sessions/new');
     yield page.setViewport({ width: 1920, height: 969 });
     console.log('chiclis');
-    console.log(yield page.content());
-    const navigationPromise = page.waitForNavigation();
+    // const navigationPromise = page.waitForNavigation();
     console.log(yield page.content());
     yield page.waitForSelector('#login');
     yield page.focus('#login');
@@ -36,9 +49,8 @@ const { url, user, pass } = parse_args_1.parseArgs(process.argv);
     yield page.focus('#password');
     yield page.keyboard.type(pass);
     yield page.keyboard.press('Enter');
-    yield navigationPromise;
+    yield page.waitForNavigation();
     console.log(yield page.content());
-    yield navigationPromise;
     yield page.waitForSelector('.sidebar-page > #content #container');
     yield page.click('.sidebar-page > #content #container');
     yield page.waitForSelector('.navbar-limited > .global-navbar-menu > .dropdown > .dropdown-toggle > .rounded');
