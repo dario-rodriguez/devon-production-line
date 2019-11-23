@@ -46,9 +46,10 @@ pipeline {
                 script {
                     dir('template-utils/create-tokens/puppeteer-scripts') {
                         def gitlabToken
-                        withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
-                            gitlabToken = sh /*returnStdout: true, */script: "node add-gitlab-token.js ${ProductionLineGlobals.GITLAB_BASE_URL} ${user} ${pass}"
-                        }
+                        // withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        //     gitlabToken = sh /*returnStdout: true, */script: "node add-gitlab-token.js ${ProductionLineGlobals.GITLAB_BASE_URL} ${user} ${pass}"
+                        // }
+                        httpRequest consoleLogResponseBody: true, authentication: credentialsId, httpMode: 'GET', url: "${ProductionLineGlobals.GITLAB_BASE_URL}/user"
 
                         GitLab.createGitlabTokenCredentials('gitlab-token', 'GitLab API token for PL service account', gitlabToken.trim())
                     }
