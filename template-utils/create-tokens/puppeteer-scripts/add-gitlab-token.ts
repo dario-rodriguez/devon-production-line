@@ -25,7 +25,7 @@ process.on('uncaughtException', err => {
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
-  page.authenticate({ username: user, password: pass });
+  // page.authenticate({ username: user, password: pass });
 
   const navigationPromise = page.waitForNavigation();
 
@@ -46,13 +46,10 @@ process.on('uncaughtException', err => {
   );
   await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
 
-  await page.waitForNavigation();
-
-  console.log(await page.content());
-
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
   );
+  console.log('selectore');
   await delay(10000);
   await page.click(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',

@@ -34,7 +34,7 @@ process.on('uncaughtException', err => {
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = yield browser.newPage();
-    page.authenticate({ username: user, password: pass });
+    // page.authenticate({ username: user, password: pass });
     const navigationPromise = page.waitForNavigation();
     yield page.goto(url + '/users/sign_in');
     yield page.setViewport({ width: 1920, height: 969 });
@@ -46,9 +46,8 @@ process.on('uncaughtException', err => {
     yield page.keyboard.type(pass);
     yield page.waitForSelector('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
     yield page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
-    yield page.waitForNavigation();
-    console.log(yield page.content());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
+    console.log('selectore');
     yield delay(10000);
     yield page.click('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown.show > div > ul > li:nth-child(5) > a');
