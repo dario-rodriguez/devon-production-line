@@ -48,10 +48,10 @@ process.on('uncaughtException', err => {
     // const navigationPromise = page.waitForNavigation();
     yield page.waitForSelector('#login');
     yield page.focus('#login');
-    yield page.keyboard.type(user);
+    yield page.$eval('#login', (el) => (el.value = user));
     yield page.waitForSelector('#password');
     yield page.focus('#password');
-    yield page.keyboard.type(pass);
+    yield page.$eval('#password', (el) => (el.value = pass));
     // await page.keyboard.press('Enter');
     // await page.waitForNavigation();
     yield page.waitForSelector('#login_form > form > div:nth-child(3) > div > button');
