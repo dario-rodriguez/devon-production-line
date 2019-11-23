@@ -46,12 +46,12 @@ pipeline {
                 script {
                     dir('template-utils/create-tokens/puppeteer-scripts') {
                         def gitlabToken
-                        withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
-                            gitlabToken = sh /*returnStdout: true, */script: "node add-gitlab-token.js ${ProductionLineGlobals.GITLAB_BASE_URL} ${user} ${pass}"
-                        }
-                        // httpRequest consoleLogResponseBody: true,  ignoreSslErrors: true, authentication: params.svcaccount, httpMode: 'GET', url: "${ProductionLineGlobals.GITLAB_BASE_URL}/user"
+                        // withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                        //     gitlabToken = sh /*returnStdout: true, */script: "node add-gitlab-token.js ${ProductionLineGlobals.GITLAB_BASE_URL} ${user} ${pass}"
+                        // }
+                        // // httpRequest consoleLogResponseBody: true,  ignoreSslErrors: true, authentication: params.svcaccount, httpMode: 'GET', url: "${ProductionLineGlobals.GITLAB_BASE_URL}/user"
 
-                        GitLab.createGitlabTokenCredentials('gitlab-token', 'GitLab API token for PL service account', gitlabToken.trim())
+                        // GitLab.createGitlabTokenCredentials('gitlab-token', 'GitLab API token for PL service account', gitlabToken.trim())
                     }
                 }
             }
@@ -60,9 +60,10 @@ pipeline {
         stage('Create SonarQube API token') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
-                        env.sonarToken = sh returnStdout: true, script: "node template-utils/create-tokens/puppeteer-scripts/add-sonarqube-token.js ${ProductionLineGlobals.SONARQUBE_BASE_URL} ${user} ${pass}"
-                    }
+                    // withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
+                    //     env.sonarToken = sh returnStdout: true, script: "node template-utils/create-tokens/puppeteer-scripts/add-sonarqube-token.js ${ProductionLineGlobals.SONARQUBE_BASE_URL} ${user} ${pass}"
+                    // }
+                    httpRequest consoleLogResponseBody: true, requestBody: '{"name": "jenkins"}', ignoreSslErrors: true, authentication: params.svcaccount, httpMode: 'POST', url: "${ProductionLineGlobals.SONARQUBE_BASE_URL}/api/user_tokens/generate"
 
                     jenkinsConfiguration.createCredatialObjectSecretString('sonar-token', 'SonarQube API token for PL service account', env.sonarToken.trim())
                 }
