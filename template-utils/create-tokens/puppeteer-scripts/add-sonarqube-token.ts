@@ -53,8 +53,10 @@ process.on('uncaughtException', err => {
   // await page.keyboard.press('Enter');
 
   // await page.waitForNavigation();
-  await page.waitForSelector('#login_form > button');
-  await page.click('#login_form > button');
+  await page.waitForSelector(
+    '#login_form > form > div:nth-child(3) > div > button',
+  );
+  await page.click('#login_form > form > div:nth-child(3) > div > button');
 
   await delay(10000);
 
