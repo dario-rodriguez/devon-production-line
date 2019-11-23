@@ -45,8 +45,8 @@ process.on('uncaughtException', err => {
     yield page.focus('#login');
     yield page.keyboard.type('admin');
     yield page.waitForSelector('#password');
-    yield page.focus('admin');
-    yield page.keyboard.type(pass);
+    yield page.focus('#password');
+    yield page.keyboard.type('admin');
     // await page.keyboard.press('Enter');
     // await page.waitForNavigation();
     yield page.waitForSelector('#login_form > form > div:nth-child(3) > div > button');
