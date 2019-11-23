@@ -47,10 +47,11 @@ process.on('uncaughtException', err => {
     yield page.waitForSelector('#password');
     yield page.focus('#password');
     yield page.keyboard.type(pass);
-    yield page.keyboard.press('Enter');
+    // await page.keyboard.press('Enter');
     // await page.waitForNavigation();
     yield page.waitForSelector('#login_form > form > div:nth-child(3) > div > button');
     yield page.click('#login_form > form > div:nth-child(3) > div > button');
+    yield page.waitForNavigation();
     console.log(yield page.content());
     yield page.waitForSelector('.sidebar-page > #content #container');
     yield page.click('.sidebar-page > #content #container');

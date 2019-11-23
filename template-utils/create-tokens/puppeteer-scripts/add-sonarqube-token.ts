@@ -45,7 +45,7 @@ process.on('uncaughtException', err => {
   await page.focus('#password');
   await page.keyboard.type(pass);
 
-  await page.keyboard.press('Enter');
+  // await page.keyboard.press('Enter');
 
   // await page.waitForNavigation();
   await page.waitForSelector(
@@ -53,6 +53,7 @@ process.on('uncaughtException', err => {
   );
   await page.click('#login_form > form > div:nth-child(3) > div > button');
 
+  await page.waitForNavigation();
   console.log(await page.content());
 
   await page.waitForSelector('.sidebar-page > #content #container');
