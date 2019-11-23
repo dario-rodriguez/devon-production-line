@@ -40,12 +40,15 @@ process.on('uncaughtException', err => {
   await page.focus('#password');
   await page.keyboard.type(pass);
 
-  await page.waitForSelector(
-    '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
-  );
-  await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
+  await page.keyboard.press('Enter');
+  // await page.waitForSelector(
+  //   '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
+  // );
+  // await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
 
-  await page.goto(url);
+  await navigationPromise;
+  console.log(await page.content());
+  await page.goto(url + '/');
   await navigationPromise;
   console.log(await page.content());
 
