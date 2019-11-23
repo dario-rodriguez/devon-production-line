@@ -23,7 +23,12 @@ process.on('uncaughtException', err => {
 (async () => {
   console.log('chiclis');
   const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-gpu'],
+    args: [
+      '--no-sandbox',
+      '--disable-gpu',
+      '--remote-debugging-port=9222',
+      '--disable-dev-shm-usage',
+    ],
   });
   const page = await browser.newPage();
   // page.authenticate({ username: user, password: pass });

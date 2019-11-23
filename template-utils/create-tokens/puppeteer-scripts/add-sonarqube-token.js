@@ -32,7 +32,12 @@ process.on('uncaughtException', err => {
 (() => __awaiter(void 0, void 0, void 0, function* () {
     console.log('chiclis');
     const browser = yield puppeteer_1.default.launch({
-        args: ['--no-sandbox', '--disable-gpu'],
+        args: [
+            '--no-sandbox',
+            '--disable-gpu',
+            '--remote-debugging-port=9222',
+            '--disable-dev-shm-usage',
+        ],
     });
     const page = yield browser.newPage();
     // page.authenticate({ username: user, password: pass });
