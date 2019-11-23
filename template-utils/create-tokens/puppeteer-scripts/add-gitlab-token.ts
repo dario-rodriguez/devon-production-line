@@ -32,6 +32,12 @@ process.on('uncaughtException', err => {
 
   await page.setViewport({ width: 1920, height: 969 });
 
+  await page.waitForSelector(
+    'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
+  );
+  await page.click(
+    'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
+  );
   await page.waitForSelector('#username');
   await page.focus('#username');
   await page.keyboard.type(user);
