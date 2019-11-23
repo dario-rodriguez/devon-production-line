@@ -47,8 +47,12 @@ process.on('uncaughtException', err => {
     yield page.focus('#password');
     yield page.keyboard.type(pass);
     // await page.keyboard.press('Enter');
-    yield page.waitForSelector('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
-    yield page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
+    // await page.waitForSelector(
+    //   '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
+    // );
+    // await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
+    yield page.waitForSelector('#new_ldap_user');
+    yield page.$eval('#new_ldap_user', (el) => el.submit());
     console.log(page.url());
     yield navigationPromise;
     console.log(yield page.content());

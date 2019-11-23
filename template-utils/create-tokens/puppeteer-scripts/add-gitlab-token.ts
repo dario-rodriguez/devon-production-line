@@ -47,10 +47,12 @@ process.on('uncaughtException', err => {
   await page.keyboard.type(pass);
 
   // await page.keyboard.press('Enter');
-  await page.waitForSelector(
-    '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
-  );
-  await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
+  // await page.waitForSelector(
+  //   '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
+  // );
+  // await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
+  await page.waitForSelector('#new_ldap_user');
+  await page.$eval('#new_ldap_user', (el: any) => el.submit());
 
   console.log(page.url());
   await navigationPromise;
