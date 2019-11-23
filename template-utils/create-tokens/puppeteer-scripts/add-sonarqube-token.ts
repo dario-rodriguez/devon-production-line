@@ -53,8 +53,8 @@ process.on('uncaughtException', err => {
   // await page.keyboard.press('Enter');
 
   // await page.waitForNavigation();
-  await page.waitForSelector('form.login-form');
-  await page.$eval('form.login-form', (el: any) => el.submit());
+  await page.waitForSelector('#login_form > button');
+  await page.click('#login_form > button');
 
   await delay(10000);
 

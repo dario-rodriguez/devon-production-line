@@ -54,8 +54,8 @@ process.on('uncaughtException', err => {
     yield page.keyboard.type(pass);
     // await page.keyboard.press('Enter');
     // await page.waitForNavigation();
-    yield page.waitForSelector('form.login-form');
-    yield page.$eval('form.login-form', (el) => el.submit());
+    yield page.waitForSelector('#login_form > button');
+    yield page.click('#login_form > button');
     yield delay(10000);
     console.log(page.url());
     console.log(yield page.content());
