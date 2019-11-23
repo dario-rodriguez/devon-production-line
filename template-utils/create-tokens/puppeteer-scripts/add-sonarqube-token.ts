@@ -53,6 +53,8 @@ process.on('uncaughtException', err => {
   );
   await page.click('#login_form > form > div:nth-child(3) > div > button');
 
+  console.log(await page.content());
+  console.log(page.url());
   await page.waitForNavigation();
   console.log(await page.content());
 

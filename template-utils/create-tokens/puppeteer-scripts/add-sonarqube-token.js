@@ -51,6 +51,8 @@ process.on('uncaughtException', err => {
     // await page.waitForNavigation();
     yield page.waitForSelector('#login_form > form > div:nth-child(3) > div > button');
     yield page.click('#login_form > form > div:nth-child(3) > div > button');
+    console.log(yield page.content());
+    console.log(page.url());
     yield page.waitForNavigation();
     console.log(yield page.content());
     yield page.waitForSelector('.sidebar-page > #content #container');
