@@ -49,13 +49,6 @@ process.on('uncaughtException', err => {
   console.log(page.url());
   await navigationPromise;
   console.log(page.url());
-  console.log(await page.content());
-  await page.goto(url + '/');
-  console.log(page.url());
-  await navigationPromise;
-  console.log(page.url());
-  console.log(await page.content());
-  console.log(page.url());
 
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',

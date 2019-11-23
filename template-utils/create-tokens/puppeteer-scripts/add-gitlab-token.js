@@ -52,13 +52,6 @@ process.on('uncaughtException', err => {
     console.log(page.url());
     yield navigationPromise;
     console.log(page.url());
-    console.log(yield page.content());
-    yield page.goto(url + '/');
-    console.log(page.url());
-    yield navigationPromise;
-    console.log(page.url());
-    console.log(yield page.content());
-    console.log(page.url());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     console.log('selectore');
     yield delay(10000);
