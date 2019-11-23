@@ -54,6 +54,9 @@ process.on('uncaughtException', err => {
   await page.waitForSelector('.sidebar-page > #content #container');
   await page.click('.sidebar-page > #content #container');
 
+  await delay(10000);
+
+  console.log(await page.content());
   await page.waitForSelector(
     '.navbar-limited > .global-navbar-menu > .dropdown > .dropdown-toggle > .rounded',
   );

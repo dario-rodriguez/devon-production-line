@@ -53,6 +53,8 @@ process.on('uncaughtException', err => {
     yield page.$eval('form.login-form', (el) => el.submit());
     yield page.waitForSelector('.sidebar-page > #content #container');
     yield page.click('.sidebar-page > #content #container');
+    yield delay(10000);
+    console.log(yield page.content());
     yield page.waitForSelector('.navbar-limited > .global-navbar-menu > .dropdown > .dropdown-toggle > .rounded');
     yield page.click('.navbar-limited > .global-navbar-menu > .dropdown > .dropdown-toggle > .rounded');
     yield page.waitForSelector('.dropdown > .popup > .menu > li:nth-child(3) > a');
