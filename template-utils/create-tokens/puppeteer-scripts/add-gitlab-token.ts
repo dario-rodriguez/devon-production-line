@@ -46,8 +46,6 @@ process.on('uncaughtException', err => {
   );
   await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
 
-  console.log(await page.content());
-
   await page.waitForNavigation();
 
   console.log(await page.content());
