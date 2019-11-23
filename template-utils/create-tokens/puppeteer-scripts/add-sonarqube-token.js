@@ -41,7 +41,6 @@ process.on('uncaughtException', err => {
     yield page.setViewport({ width: 1920, height: 969 });
     console.log('chiclis');
     // const navigationPromise = page.waitForNavigation();
-    console.log(yield page.content());
     yield page.waitForSelector('#login');
     yield page.focus('#login');
     yield page.keyboard.type(user);
@@ -49,7 +48,7 @@ process.on('uncaughtException', err => {
     yield page.focus('#password');
     yield page.keyboard.type(pass);
     yield page.keyboard.press('Enter');
-    yield page.waitForNavigation();
+    // await page.waitForNavigation();
     console.log(yield page.content());
     yield page.waitForSelector('.sidebar-page > #content #container');
     yield page.click('.sidebar-page > #content #container');

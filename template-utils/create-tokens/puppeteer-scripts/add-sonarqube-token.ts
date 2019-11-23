@@ -37,8 +37,6 @@ process.on('uncaughtException', err => {
 
   // const navigationPromise = page.waitForNavigation();
 
-  console.log(await page.content());
-
   await page.waitForSelector('#login');
   await page.focus('#login');
   await page.keyboard.type(user);
@@ -49,7 +47,7 @@ process.on('uncaughtException', err => {
 
   await page.keyboard.press('Enter');
 
-  await page.waitForNavigation();
+  // await page.waitForNavigation();
 
   console.log(await page.content());
 
