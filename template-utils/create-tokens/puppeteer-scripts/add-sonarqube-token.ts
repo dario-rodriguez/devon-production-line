@@ -51,12 +51,13 @@ process.on('uncaughtException', err => {
   await page.waitForSelector('form.login-form');
   await page.$eval('form.login-form', (el: any) => el.submit());
 
-  await page.waitForSelector('.sidebar-page > #content #container');
-  await page.click('.sidebar-page > #content #container');
-
   await delay(10000);
 
+  console.log(page.url());
   console.log(await page.content());
+
+  await page.waitForSelector('.sidebar-page > #content #container');
+  await page.click('.sidebar-page > #content #container');
   await page.waitForSelector(
     '.navbar-limited > .global-navbar-menu > .dropdown > .dropdown-toggle > .rounded',
   );
