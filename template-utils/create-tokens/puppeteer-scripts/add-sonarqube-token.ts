@@ -51,10 +51,6 @@ process.on('uncaughtException', err => {
   await page.waitForSelector('form.login-form');
   await page.$eval('form.login-form', (el: any) => el.submit());
 
-  console.log(page.url());
-  await page.waitForNavigation();
-  console.log(await page.content());
-
   await page.waitForSelector('.sidebar-page > #content #container');
   await page.click('.sidebar-page > #content #container');
 

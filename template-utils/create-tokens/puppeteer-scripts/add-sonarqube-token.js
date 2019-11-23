@@ -51,9 +51,6 @@ process.on('uncaughtException', err => {
     // await page.waitForNavigation();
     yield page.waitForSelector('form.login-form');
     yield page.$eval('form.login-form', (el) => el.submit());
-    console.log(page.url());
-    yield page.waitForNavigation();
-    console.log(yield page.content());
     yield page.waitForSelector('.sidebar-page > #content #container');
     yield page.click('.sidebar-page > #content #container');
     yield page.waitForSelector('.navbar-limited > .global-navbar-menu > .dropdown > .dropdown-toggle > .rounded');
