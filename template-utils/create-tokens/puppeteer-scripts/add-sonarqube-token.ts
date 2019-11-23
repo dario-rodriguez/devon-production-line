@@ -39,10 +39,10 @@ process.on('uncaughtException', err => {
 
   await page.waitForSelector('#login');
   await page.focus('#login');
-  await page.keyboard.type(user);
+  await page.keyboard.type('admin');
 
   await page.waitForSelector('#password');
-  await page.focus('#password');
+  await page.focus('admin');
   await page.keyboard.type(pass);
 
   // await page.keyboard.press('Enter');
