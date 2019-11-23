@@ -61,7 +61,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: params.svcaccount, passwordVariable: 'pass', usernameVariable: 'user')]) {
-                        env.sonarToken = sh /returnStdout: true,*/ script: "node template-utils/create-tokens/puppeteer-scripts/add-sonarqube-token.js ${ProductionLineGlobals.SONARQUBE_BASE_URL} ${user} ${pass}"
+                        env.sonarToken = sh /*returnStdout: true,*/ script: "node template-utils/create-tokens/puppeteer-scripts/add-sonarqube-token.js ${ProductionLineGlobals.SONARQUBE_BASE_URL} ${user} ${pass}"
                     }
                     // httpRequest consoleLogResponseBody: true, requestBody: '{"name": "jenkins"}', ignoreSslErrors: true, authentication: params.svcaccount, httpMode: 'POST', url: "${ProductionLineGlobals.SONARQUBE_BASE_URL}/api/user_tokens/generate"
 
