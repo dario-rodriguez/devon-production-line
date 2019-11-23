@@ -27,9 +27,9 @@ process.on('uncaughtException', err => {
   const page = await browser.newPage();
   // page.authenticate({ username: user, password: pass });
 
-  const navigationPromise = page.waitForNavigation();
-
   await page.goto(url + '/users/sign_in');
+
+  const navigationPromise = page.waitForNavigation();
 
   await page.setViewport({ width: 1920, height: 969 });
 
@@ -45,6 +45,10 @@ process.on('uncaughtException', err => {
     '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
   );
   await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
+
+  console.log(await page.content());
+  await navigationPromise;
+  console.log(await page.content());
 
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
