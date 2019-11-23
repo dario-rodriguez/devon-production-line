@@ -35,18 +35,7 @@ const { url, user, pass } = parseArgs(process.argv);
 
   await navigationPromise;
 
-  await page.waitForSelector('#container > #login_form #login');
-  await page.click('#container > #login_form #login');
-
-  await page.waitForSelector('#container > #login_form #login');
-  await page.click('#container > #login_form #login');
-
-  await page.type('#container > #login_form #login', 'darrodri');
-
-  await page.waitForSelector(
-    '#login_form > .login-form > div > .text-right > .button',
-  );
-  await page.click('#login_form > .login-form > div > .text-right > .button');
+  console.log(await page.content());
 
   await navigationPromise;
 
