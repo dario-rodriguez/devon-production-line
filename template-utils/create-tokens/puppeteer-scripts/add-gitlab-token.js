@@ -44,8 +44,8 @@ process.on('uncaughtException', err => {
     yield page.waitForSelector('#password');
     yield page.focus('#password');
     yield page.keyboard.type(pass);
-    yield page.waitForSelector('#ldapmain > input.qa-sign-in-button');
-    yield page.click('#ldapmain > input.qa-sign-in-button');
+    yield page.waitForSelector('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
+    yield page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
     console.log(yield page.content());
     yield page.waitForNavigation();
     console.log(yield page.content());
