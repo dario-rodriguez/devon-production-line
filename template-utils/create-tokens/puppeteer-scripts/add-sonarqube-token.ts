@@ -48,12 +48,9 @@ process.on('uncaughtException', err => {
   // await page.keyboard.press('Enter');
 
   // await page.waitForNavigation();
-  await page.waitForSelector(
-    '#login_form > form > div:nth-child(3) > div > button',
-  );
-  await page.click('#login_form > form > div:nth-child(3) > div > button');
+  await page.waitForSelector('form.login-form');
+  await page.$eval('form.login-form', (el: any) => el.submit());
 
-  console.log(await page.content());
   console.log(page.url());
   await page.waitForNavigation();
   console.log(await page.content());

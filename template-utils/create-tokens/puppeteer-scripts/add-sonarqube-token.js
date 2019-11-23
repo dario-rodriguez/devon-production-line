@@ -49,9 +49,8 @@ process.on('uncaughtException', err => {
     yield page.keyboard.type('admin');
     // await page.keyboard.press('Enter');
     // await page.waitForNavigation();
-    yield page.waitForSelector('#login_form > form > div:nth-child(3) > div > button');
-    yield page.click('#login_form > form > div:nth-child(3) > div > button');
-    console.log(yield page.content());
+    yield page.waitForSelector('form.login-form');
+    yield page.$eval('form.login-form', (el) => el.submit());
     console.log(page.url());
     yield page.waitForNavigation();
     console.log(yield page.content());
