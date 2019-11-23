@@ -55,8 +55,6 @@ process.on('uncaughtException', err => {
   await page.waitForSelector('#new_ldap_user');
   await page.$eval('#new_ldap_user', (el: any) => el.submit());
 
-  await page.waitForNavigation();
-  console.log(await page.content());
   console.log(page.url());
 
   await page.waitForSelector(

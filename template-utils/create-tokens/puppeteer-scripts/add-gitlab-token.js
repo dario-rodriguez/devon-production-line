@@ -54,8 +54,6 @@ process.on('uncaughtException', err => {
     // await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
     yield page.waitForSelector('#new_ldap_user');
     yield page.$eval('#new_ldap_user', (el) => el.submit());
-    yield page.waitForNavigation();
-    console.log(yield page.content());
     console.log(page.url());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     console.log('selectore');
