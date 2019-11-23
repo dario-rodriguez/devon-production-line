@@ -31,12 +31,13 @@ process.on('uncaughtException', err => {
 });
 (() => __awaiter(void 0, void 0, void 0, function* () {
     const browser = yield puppeteer_1.default.launch({
+        // headless: false,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });
     const page = yield browser.newPage();
-    // page.authenticate({ username: user, password: pass });
+    page.authenticate({ username: user, password: pass });
     const navigationPromise = page.waitForNavigation();
-    yield page.goto(url + '/users/sign_in');
+    yield page.goto(url + '/users/sign_out');
     yield page.setViewport({ width: 1920, height: 969 });
     yield page.waitForSelector('body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a');
     yield page.click('body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a');
@@ -53,8 +54,7 @@ process.on('uncaughtException', err => {
     // await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
     yield page.waitForSelector('#new_ldap_user');
     yield page.$eval('#new_ldap_user', (el) => el.submit());
-    console.log(page.url());
-    yield navigationPromise;
+    yield page.waitForNavigation();
     console.log(yield page.content());
     console.log(page.url());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');

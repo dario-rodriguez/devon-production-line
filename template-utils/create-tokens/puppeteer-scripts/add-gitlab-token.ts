@@ -22,13 +22,14 @@ process.on('uncaughtException', err => {
 
 (async () => {
   const browser = await puppeteer.launch({
+    // headless: false,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
   const page = await browser.newPage();
-  // page.authenticate({ username: user, password: pass });
+  page.authenticate({ username: user, password: pass });
   const navigationPromise = page.waitForNavigation();
 
-  await page.goto(url + '/users/sign_in');
+  await page.goto(url + '/users/sign_out');
 
   await page.setViewport({ width: 1920, height: 969 });
 
@@ -54,8 +55,7 @@ process.on('uncaughtException', err => {
   await page.waitForSelector('#new_ldap_user');
   await page.$eval('#new_ldap_user', (el: any) => el.submit());
 
-  console.log(page.url());
-  await navigationPromise;
+  await page.waitForNavigation();
   console.log(await page.content());
   console.log(page.url());
 
