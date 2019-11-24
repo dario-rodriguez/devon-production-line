@@ -37,24 +37,28 @@ process.on('uncaughtException', err => {
     const page = yield browser.newPage();
     page.authenticate({ username: user, password: pass });
     // const navigationPromise = page.waitForNavigation();
-    yield page.goto(url + '/users/sign_in');
+    yield page.goto(url);
     yield page.setViewport({ width: 1920, height: 969 });
-    yield page.waitForSelector('body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a');
-    yield page.click('body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a');
-    yield page.waitForSelector('#username');
-    yield page.focus('#username');
-    yield page.keyboard.type(user);
-    yield page.waitForSelector('#password');
-    yield page.focus('#password');
-    yield page.keyboard.type(pass);
+    // await page.waitForSelector(
+    //   'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
+    // );
+    // await page.click(
+    //   'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
+    // );
+    // await page.waitForSelector('#username');
+    // await page.focus('#username');
+    // await page.keyboard.type(user);
+    // await page.waitForSelector('#password');
+    // await page.focus('#password');
+    // await page.keyboard.type(pass);
     // await page.keyboard.press('Enter');
     // await page.waitForSelector(
     //   '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
     // );
     // await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
-    yield page.waitForSelector('#new_ldap_user');
-    yield page.$eval('#new_ldap_user', (el) => el.submit());
-    console.log(page.url());
+    // await page.waitForSelector('#new_ldap_user');
+    // await page.$eval('#new_ldap_user', (el: any) => el.submit());
+    // console.log(page.url());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     console.log('selectore');
     yield delay(10000);

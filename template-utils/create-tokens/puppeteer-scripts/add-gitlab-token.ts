@@ -29,33 +29,33 @@ process.on('uncaughtException', err => {
   page.authenticate({ username: user, password: pass });
   // const navigationPromise = page.waitForNavigation();
 
-  await page.goto(url + '/users/sign_in');
+  await page.goto(url);
 
   await page.setViewport({ width: 1920, height: 969 });
 
-  await page.waitForSelector(
-    'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
-  );
-  await page.click(
-    'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
-  );
-  await page.waitForSelector('#username');
-  await page.focus('#username');
-  await page.keyboard.type(user);
+  // await page.waitForSelector(
+  //   'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
+  // );
+  // await page.click(
+  //   'body > div > div.container.navless-container > div > div.row > div.col-sm-5.new-session-forms-container > div > ul > li:nth-child(1) > a',
+  // );
+  // await page.waitForSelector('#username');
+  // await page.focus('#username');
+  // await page.keyboard.type(user);
 
-  await page.waitForSelector('#password');
-  await page.focus('#password');
-  await page.keyboard.type(pass);
+  // await page.waitForSelector('#password');
+  // await page.focus('#password');
+  // await page.keyboard.type(pass);
 
   // await page.keyboard.press('Enter');
   // await page.waitForSelector(
   //   '#new_ldap_user > input.btn-success.btn.qa-sign-in-button',
   // );
   // await page.click('#new_ldap_user > input.btn-success.btn.qa-sign-in-button');
-  await page.waitForSelector('#new_ldap_user');
-  await page.$eval('#new_ldap_user', (el: any) => el.submit());
+  // await page.waitForSelector('#new_ldap_user');
+  // await page.$eval('#new_ldap_user', (el: any) => el.submit());
 
-  console.log(page.url());
+  // console.log(page.url());
 
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
