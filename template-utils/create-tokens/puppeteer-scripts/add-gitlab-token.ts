@@ -57,6 +57,9 @@ process.on('uncaughtException', err => {
 
   // console.log(page.url());
 
+  console.log(page.url());
+  console.log(await page.content());
+
   await page.waitForSelector(
     'body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a',
   );

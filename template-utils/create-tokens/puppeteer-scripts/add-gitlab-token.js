@@ -59,6 +59,8 @@ process.on('uncaughtException', err => {
     // await page.waitForSelector('#new_ldap_user');
     // await page.$eval('#new_ldap_user', (el: any) => el.submit());
     // console.log(page.url());
+    console.log(page.url());
+    console.log(yield page.content());
     yield page.waitForSelector('body > header > div > div > div.navbar-collapse.collapse > ul > li.nav-item.header-user.dropdown > a');
     console.log('selectore');
     yield delay(10000);
